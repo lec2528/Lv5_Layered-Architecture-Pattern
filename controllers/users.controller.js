@@ -1,3 +1,4 @@
+//controllers\users.controller.js
 const UserService = require('../services/users.services');
 
 class UsersController {
@@ -19,7 +20,7 @@ class UsersController {
   loginUsers = async (req, res, next) => {
     const { nickname, password } = req.body;
     const token = await this.userService.doLogin(nickname, password);
-    res.cookie('Authorization', `Bearer ${token}`);
+    res.cookie('Authorization', `Bearer ${token.token}`);
     res.status(200).json({
       token,
       success: `로그인 완료`,
