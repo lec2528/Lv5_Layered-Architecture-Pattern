@@ -1,5 +1,7 @@
 const UsersRepository = require('../repositories/users.repository');
 const jwt = require('jsonwebtoken');
+const middleware = require('../Middleware/loginmiddleware');
+
 class UsersService {
   usersRepository = new UsersRepository();
 
@@ -29,6 +31,7 @@ class UsersService {
       // 로그인 성공
       const userInfo = {
         nickname: user.nickname,
+        password: user.password,
       };
       // 토큰을 생성합니다.
       const token = jwt.sign({ userId: user.userId }, 'custom-secret-key');
