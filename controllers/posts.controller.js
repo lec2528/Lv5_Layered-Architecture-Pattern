@@ -1,6 +1,7 @@
 // controllers/posts.controller.js
 
-const PostService = require('../services/posts.service');
+const PostService = require('../services/posts.services');
+const middleware = require('../Middleware/loginmiddleware');
 
 // Post의 컨트롤러(Controller)역할을 하는 클래스
 class PostsController {
@@ -15,12 +16,17 @@ class PostsController {
 
   getPostById = async (req, res, next) => {
     // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
-    const posts = await this.postService.findOnePost();
+    const { postId } = req.params;
+    const posts = await this.postService.findOnePost(postId);
 
     res.status(200).json({ data: posts });
   };
 
   createPost = async (req, res, next) => {
+    const userId = res.locals.user;
+    const { postId } = req.params;
+    console.log('createPostuserId', userId);
+    console.log('createPostpostId', postId);
     const { nickname, password, title, content } = req.body;
 
     // 서비스 계층에 구현된 createPost 로직을 실행합니다.
@@ -28,15 +34,20 @@ class PostsController {
       nickname,
       password,
       title,
-      content
+      content,
+      userId,
+      postId
     );
 
     res.status(201).json({ data: createPostData });
   };
   updatePost = async (req, res, next) => {
+    const { postId } = req.params;
+    console.log(postId);
     const { title, content, updatedAt } = req.body;
 
     const updatePostData = await this.postService.updatePost(
+      postId,
       title,
       content,
       updatedAt
@@ -45,8 +56,8 @@ class PostsController {
   };
   deletePost = async (req, res, next) => {
     const { postId } = req.params;
-
-    const deletePostDate = await this.postService.deletePost(postId);
+    const deletePostData = await this.postService.deletePost(postId);
+    res.status(200).json({ data: deletePostData });
   };
 }
 
