@@ -7,7 +7,7 @@ class PostService {
     // 저장소(Repository)에게 데이터를 요청합니다.
     const allPost = await this.postRepository.findAllPost();
     if (!allPost) {
-      throw new Error('존재하지 않는 게시글 입니다.');
+      throw new Error('조회 가능한 게시글이 없습니다.');
     }
     // 호출한 Post들을 가장 최신 게시글 부터 정렬합니다.
     allPost.sort((a, b) => {
@@ -41,12 +41,12 @@ class PostService {
 
   createPost = async (nickname, password, title, content, userId, postId) => {
     if (!title) {
-      throw new Error('게시글 제목을 입력해주세요.');
+      throw new Error('게시글 제목이 입력되지 않았습니다.');
     }
     if (!content) {
-      throw new Error('게시글 내용을 입력해주세요.');
+      throw new Error('게시글 내용이 입력되지 않았습니다.');
     }
-    // 저장소(Repository)에게 데이터를 요청합니다.
+    // 저장소(Repository)에게 입력받은 데이터를 전달합니다.
     const createPostData = await this.postRepository.createPost(
       nickname,
       password,
