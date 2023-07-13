@@ -1,3 +1,4 @@
+//Middleware\loginmiddleware.js
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
@@ -14,7 +15,6 @@ module.exports = async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(loginToken, 'custom-secret-key');
     const userId = decodedToken.userId;
-    console.log(userId);
 
     const user = await Users.findOne({ where: { userId } });
     if (!user) {
@@ -23,8 +23,7 @@ module.exports = async (req, res, next) => {
         .status(401)
         .json({ message: '토큰 사용자가 존재하지 않습니다.' });
     }
-    res.locals.user = user;
-    console.log(res.locals.user);
+    res.locals.user = user.userId;
     next();
   } catch (err) {
     console.error(err);
