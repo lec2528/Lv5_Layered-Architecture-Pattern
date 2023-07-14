@@ -11,8 +11,21 @@ class CommentsController {
   createComments = async (req, res, next) => {
     const userId = res.locals.user;
     const { postId } = req.params;
+    console.log('userId', userId);
+    console.log('postId', postId);
     const { nickname, content } = req.body;
+    if (!postId) {
+      res.status(412).json({
+        errorMessage:
+          '게시글이 존재하지 않거나 삭제되었기 때문에 댓글을 생성할 수 없습니다.',
+      });
+    }
 
+    if (!content.length) {
+      res.status(412).json({
+        errorMessage: '댓글 내용을 입력해주세요',
+      });
+    }
     const createComments = await this.commentsService.createComments(
       nickname,
       content,
