@@ -1,7 +1,6 @@
 // controllers/posts.controller.js
 
 const PostService = require('../services/posts.services');
-const middleware = require('../Middleware/loginmiddleware');
 
 // Post의 컨트롤러(Controller)역할을 하는 클래스
 class PostsController {
@@ -18,7 +17,11 @@ class PostsController {
     // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
     const { postId } = req.params;
     const posts = await this.postService.findOnePost(postId);
-
+    if (!postId) {
+      res.status(400).json({
+        errorMessage: '조회하려는 게시글이 존재하지 않습니다.',
+      });
+    }
     res.status(200).json({ data: posts });
   };
 
@@ -28,6 +31,16 @@ class PostsController {
     console.log('createPostuserId', userId);
     console.log('createPostpostId', postId);
     const { nickname, password, title, content } = req.body;
+    if (!title) {
+      res.status(400).json({
+        errorMessage: '제목을 입력해주세요.',
+      });
+    }
+    if (!content) {
+      res.status(400).json({
+        errorMessage: '내용을 입력해주세요.',
+      });
+    }
 
     // 서비스 계층에 구현된 createPost 로직을 실행합니다.
     const createPostData = await this.postService.createPost(
