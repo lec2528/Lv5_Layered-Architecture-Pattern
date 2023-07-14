@@ -1,6 +1,5 @@
 const UsersRepository = require('../repositories/users.repository');
 const jwt = require('jsonwebtoken');
-const middleware = require('../Middleware/loginmiddleware');
 
 class UsersService {
   usersRepository = new UsersRepository();
