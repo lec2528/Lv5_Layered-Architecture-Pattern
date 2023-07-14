@@ -29,12 +29,31 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false, // NOT NULL
       },
-      userId: DataTypes.INTEGER,
+      userId: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Users', // Users 모델을 참조합니다.
+          key: 'userId', // Users 모델의 userId를 참조합니다.
+        },
+        onDelete: 'CASCADE', // 만약 Users 모델의 userId가 삭제되면, Posts 모델의 데이터가 삭제됩니다.
+      },
       nickname: DataTypes.STRING,
       title: DataTypes.STRING,
       content: DataTypes.STRING,
       like: DataTypes.INTEGER,
+      createdAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false, // NOT NULL
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
