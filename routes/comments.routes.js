@@ -8,12 +8,12 @@ const middleware = require('../Middleware/loginmiddleware');
 router.get('/:postId/comment', commentsController.getComments);
 router.post('/:postId/comment', middleware, commentsController.createComments);
 router.put(
-  '/:postId/comment/:commentsId',
+  '/:postId/comment/:commentId',
   middleware,
   commentsController.updateComments
 );
 router.delete(
-  '/:postId/comment/:commentsId',
+  '/:postId/comment/:commentId',
   middleware,
   commentsController.deleteComments
 );
