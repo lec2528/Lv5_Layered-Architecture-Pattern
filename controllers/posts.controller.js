@@ -27,10 +27,8 @@ class PostsController {
 
   createPost = async (req, res, next) => {
     const userId = res.locals.user;
-    const { postId } = req.params;
-    console.log('createPostuserId', userId);
-    console.log('createPostpostId', postId);
-    const { nickname, password, title, content } = req.body;
+    console.log(userId);
+    const { nickname, title, content } = req.body;
     if (!title) {
       res.status(400).json({
         errorMessage: '제목을 입력해주세요.',
@@ -44,33 +42,30 @@ class PostsController {
 
     // 서비스 계층에 구현된 createPost 로직을 실행합니다.
     const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content,
       userId,
-      postId
+      nickname,
+      title,
+      content
     );
 
     res.status(201).json({ data: createPostData });
   };
   updatePost = async (req, res, next) => {
+    const userId = res.locals.user;
     const { postId } = req.params;
-    console.log(postId);
-    const { title, content, updatedAt } = req.body;
+    const { nickname, title, content, updatedAt } = req.body;
 
     const updatePostData = await this.postService.updatePost(
       postId,
       title,
-      content,
-      updatedAt
+      content
     );
     res.status(201).json({ data: updatePostData });
   };
   deletePost = async (req, res, next) => {
     const { postId } = req.params;
-    const deletePostData = await this.postService.deletePost(postId);
-    res.status(200).json({ data: deletePostData });
+    await this.postService.deletePost(postId);
+    res.status(200).json({ success: '게시글이 삭제되었습니다.' });
   };
 }
 

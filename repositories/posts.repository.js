@@ -15,25 +15,20 @@ class PostRepository {
     console.log(detailPost);
     return detailPost;
   };
-  createPost = async (nickname, password, title, content, userId, postId) => {
+  createPost = async (userId, nickname, title, content) => {
     // ORM인 Sequelize에서 Posts 모델의 create 메소드를 사용해 데이터를 요청합니다.
     const createPostData = await Posts.create({
-      postId,
+      userId,
       nickname,
-      password,
       title,
       content,
-      userId,
     });
 
     return createPostData;
   };
   updatePost = async (postId, title, content) => {
-    const updatePostData = await Posts.update(
-      { title, content, updatedAt: new Date() },
-      { where: { postId } }
-    );
-    return updatePostData;
+    const post = await Posts.findByPk(postId);
+    return await post.update({ title, content }, { where: { postId } });
   };
 
   deletePost = async (postId) => {

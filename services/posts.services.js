@@ -16,13 +16,7 @@ class PostService {
 
     // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
     return allPost.map((post) => {
-      return {
-        postId: post.postId,
-        nickname: post.nickname,
-        title: post.title,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
-      };
+      return post;
     });
   };
   findOnePost = async (postId) => {
@@ -30,43 +24,22 @@ class PostService {
     if (!detailPost) {
       throw new Error('존재하지 않는 게시글 입니다.');
     }
-    return {
-      postId: detailPost.postId,
-      nickname: detailPost.nickname,
-      title: detailPost.title,
-      createdAt: detailPost.createdAt,
-      updatedAt: detailPost.updatedAt,
-    };
+    return detailPost;
   };
 
-  createPost = async (nickname, password, title, content, userId, postId) => {
-    if (!title) {
-      throw new Error('게시글 제목이 입력되지 않았습니다.');
-    }
-    if (!content) {
-      throw new Error('게시글 내용이 입력되지 않았습니다.');
-    }
+  createPost = async (userId, nickname, title, content) => {
     // 저장소(Repository)에게 입력받은 데이터를 전달합니다.
     const createPostData = await this.postRepository.createPost(
-      nickname,
-      password,
-      title,
-      content,
       userId,
-      postId
+      nickname,
+      title,
+      content
     );
 
     // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return {
-      postId: createPostData.postId,
-      nickname: createPostData.nickname,
-      title: createPostData.title,
-      content: createPostData.content,
-      createdAt: createPostData.createdAt,
-      updatedAt: createPostData.updatedAt,
-    };
+    return createPostData;
   };
-  updatePost = async (postId, title, content, updatedAt) => {
+  updatePost = async (postId, title, content) => {
     const findPost = await this.postRepository.findOnePost(postId);
     if (!findPost) {
       throw new Error('존재하지 않는 게시글 입니다.');
@@ -75,16 +48,7 @@ class PostService {
     if (!content) {
       throw new Error('수정할 내용을 입력해주세요');
     }
-    await this.postRepository.updatePost(postId, title, content, updatedAt);
-
-    const updatePostData = await this.postRepository.findOnePost(postId);
-    return {
-      postId: updatePostData.postId,
-      nickname: updatePostData.nickname,
-      title: updatePostData.title,
-      content: updatePostData.content,
-      updatedAt: updatePostData.updatedAt,
-    };
+    return await this.postRepository.updatePost(commentId, title, content);
   };
 
   deletePost = async (postId) => {
@@ -93,13 +57,7 @@ class PostService {
       throw new Error('존재하지 않는 게시글 입니다.');
     }
     await this.postRepository.deletePost(postId);
-    return {
-      postId: findPost.postId,
-      nickname: findPost.nickname,
-      title: findPost.title,
-      content: findPost.content,
-      updatedAt: findPost.updatedAt,
-    };
+    return;
   };
 }
 
