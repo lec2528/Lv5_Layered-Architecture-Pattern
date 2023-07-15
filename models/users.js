@@ -30,8 +30,18 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      email: DataTypes.STRING,
-      nickname: DataTypes.STRING,
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        required: true,
+      },
+      nickname: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        required: true,
+      },
       password: DataTypes.STRING,
       createdAt: {
         allowNull: false, // NOT NULL
