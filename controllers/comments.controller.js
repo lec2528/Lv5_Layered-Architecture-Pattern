@@ -11,9 +11,8 @@ class CommentsController {
   createComments = async (req, res, next) => {
     const userId = res.locals.user;
     const { postId } = req.params;
-    console.log('userId', userId);
-    console.log('postId', postId);
     const { nickname, content } = req.body;
+    console.log('nickname', postId);
     if (!postId) {
       res.status(412).json({
         errorMessage:
@@ -27,10 +26,10 @@ class CommentsController {
       });
     }
     const createComments = await this.commentsService.createComments(
-      nickname,
-      content,
+      userId,
       postId,
-      userId
+      nickname,
+      content
     );
 
     res.status(200).json({ createComments: createComments });
@@ -38,21 +37,19 @@ class CommentsController {
 
   updateComments = async (req, res, next) => {
     const userId = res.locals.user;
-    const { postId } = req.params;
+    const { postId, commentId } = req.params;
     const { content, updateAt } = req.body;
     const updateCommentsData = await this.commentsService.updateComments(
-      userId,
-      postId,
-      content,
-      updateAt
+      commentId,
+      content
     );
     res.status(200).json({ updateCommentsData: updateCommentsData });
   };
 
   deleteComments = async (req, res, next) => {
-    const { commentsId } = req.params;
+    const { commentId } = req.params;
 
-    await this.deleteComments(commentsId);
+    await this.commentsService.deleteComments(commentId);
     res.status(200).json({ success: '댓글이 삭제되었습니다.' });
   };
 }

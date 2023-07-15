@@ -27,57 +27,33 @@ class CommentsService {
   };
 
   createComments = async (userId, postId, nickname, content) => {
-    await this.commentsRepository.createComments(
+    const createCommentsData = await this.commentsRepository.createComments(
       userId,
       postId,
       nickname,
       content
     );
-    const createCommentsData = await this.postRepository.findOnePost(postId);
-    return {
-      userId: createCommentsData.userId,
-      postId: createCommentsData.postId,
-      nickname: createCommentsData.nickname,
-      content: createCommentsData.content,
-    };
+    // await this.postRepository.findOnePost(postId);
+    return createCommentsData;
   };
-  updateComments = async (commentId, userId, postId, content, updateAt) => {
-    const findComment = await this.commentsRepository.findOneComment(commentId);
+  updateComments = async (commentId, content) => {
+    // const findComment = await this.commentsRepository.updateComment({
+    //   commentId,content
+    // });
 
-    if (!findComment) {
-      throw new Error('존재하지 않는 게시글 입니다.');
-    }
+    // if (!findComment) {
+    //   throw new Error('존재하지 않는 게시글 입니다.');
+    // }
 
-    if (!findComment) {
-      throw new Error('수정할 내용을 입력해주세요');
-    }
-    await this.commentsRepository.updateComments(
-      userId,
-      postId,
-      content,
-      updateAt
-    );
-    const updateCommentsData = await this.commentsRepository.findOneComment(
-      postId
-    );
-    return {
-      userId: updateCommentsData.userId,
-      postId: updateCommentsData.postId,
-      content: updateCommentsData.content,
-      updateAt: updateCommentsData.updateAt,
-    };
+    // if (!findComment) {
+    //   throw new Error('수정할 내용을 입력해주세요');
+    // }
+    return await this.commentsRepository.updateComments(commentId, content);
   };
   deleteComments = async (commentId) => {
-    const findPost = await this.postRepository.findOnePost(commentId);
-    await this.postRepository.deletePost(commentId);
-    return {
-      commentId: findPost.commentId,
-      postId: findPost.postId,
-      nickname: findPost.nickname,
-      title: findPost.title,
-      content: findPost.content,
-      updatedAt: findPost.updatedAt,
-    };
+    // const findPost = await this.postRepository.findOnePost(commentId);
+    await this.commentsRepository.deletecomment(commentId);
+    return;
   };
 }
 module.exports = CommentsService;

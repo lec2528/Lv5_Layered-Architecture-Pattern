@@ -10,14 +10,21 @@ class CommentsRepository {
     console.log(detailPost);
     return detailPost;
   };
-  createComments = async (postId, userId, nickname, content) => {
+  createComments = async (userId, postId, nickname, content) => {
     const comment = await Comments.create({
-      postId,
       userId,
+      postId,
       nickname,
       content,
     });
     return comment;
+  };
+  updateComments = async (commentId, content) => {
+    const comment = await Comments.findByPk(commentId);
+    return await comment.update({ content }, { where: { commentId } });
+  };
+  deletecomment = async (commentId) => {
+    return await Comments.destroy({ where: { commentId } });
   };
 }
 module.exports = CommentsRepository;
