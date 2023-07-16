@@ -5,7 +5,7 @@ sequelize라이브러리를 이용한 mysql 데이터 관리
 23.07.15 user, post, comment까지 리팩토링 완료 추후 에러핸들링 예정
 
 ERD설계
-![Uploading Lv4_ERD 설계.PNG…]()
+![Lv4_ERD 설계](https://github.com/lec2528/Lv5_Layered-Architecture-Pattern/assets/132907542/9a98cb6d-b0b1-49c3-81b1-c3cec9796fbb)
 
 유저
 회원가입 method: post api:'/signup'
